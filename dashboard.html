@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Hoy No Circula</title>
+    <link rel="stylesheet" href="styles.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="dashboard-body">
+    
+    <div id="sidebar" class="sidebar">
+        <button class="close-sidebar-btn" id="closeSidebarBtn">&times;</button>
+        <div class="sidebar-header">
+            <i class="fas fa-user-circle"></i>
+            <h3 id="sidebarUserName">Usuario</h3>
+            <p id="sidebarUserPlaca" class="text-placa"></p>
+        </div>
+        
+        <div class="sidebar-section">
+            <h4><i class="fas fa-id-badge"></i> Mi Información Personal</h4>
+            <div class="user-detail-item">
+                <strong>Nombre Completo:</strong> <span id="sidebarFullName"></span>
+            </div>
+            <div class="user-detail-item">
+                <strong>CURP:</strong> <span id="sidebarCurp"></span>
+            </div>
+            <div class="user-detail-item">
+                <strong>Correo Electrónico:</strong> <span id="sidebarEmail">No registrado</span>
+            </div>
+            <div class="user-detail-item">
+                <strong>Celular:</strong> <span id="sidebarPhone">No registrado</span>
+            </div>
+        </div>
+        
+        <div class="sidebar-section">
+            <h4><i class="fas fa-car"></i> Datos del Vehículo</h4>
+            <div class="user-detail-item">
+                <strong>Marca:</strong> <span id="sidebarMarca"></span>
+            </div>
+            <div class="user-detail-item">
+                <strong>Modelo:</strong> <span id="sidebarModelo"></span>
+            </div>
+        </div>
+
+        <button id="logoutButton" class="submit-button sidebar-logout-btn">CERRAR SESIÓN</button>
+    </div>
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+    <div class="dashboard-container">
+        
+        <button id="openSidebarBtn" class="menu-icon-btn"><i class="fas fa-bars"></i></button>
+
+        <div class="user-info-card card-span-4">
+            <div class="user-greeting">
+                <i class="fas fa-user-circle"></i>
+                <h1 id="userGreeting">¡Bienvenido/a!</h1> 
+            </div>
+            
+            <div class="car-details-wrapper">
+                 <h3>Detalles de tu Vehículo</h3>
+                 <div class="car-details">
+                    <div>
+                        <p><strong>Marca:</strong> <span id="carMarca">Cargando...</span></p>
+                        <p><strong>Modelo:</strong> <span id="carModelo">Cargando...</span></p>
+                        <p><strong>Placa:</strong> <span id="userPlaca">Cargando...</span></p>
+                    </div>
+                    <div class="car-illustration-container">
+                        <span id="carIllustration" class="car-icon"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hnc-card hnc-card-large card-span-2">
+            <h2>HOY NO CIRCULA</h2>
+            <div class="hnc-result">
+                <p id="hncVerdict">Verificando...</p>
+            </div>
+            <p class="hnc-date"><i class="fas fa-calendar-alt"></i> Fecha: <span id="currentDate"></span></p>
+            <p class="hnc-placa-detail"><i class="fas fa-barcode"></i> Placa: <span id="hncPlacaFinal"></span></p>
+        </div>
+
+        <div class="tramite-card turistico-card card-span-1">
+            <h3><i class="fas fa-plane-departure"></i> Pase Turístico</h3>
+            <p>Permite la exención temporal del programa Hoy No Circula para vehículos foráneos.</p>
+            <ul class="tramite-list">
+                <li><i class="fas fa-check-circle"></i> Válido por 7 o 14 días.</li>
+                <li><i class="fas fa-check-circle"></i> Requerido para autos extranjeros.</li>
+            </ul>
+            <a href="#" class="tramite-btn turistico-btn"><i class="fas fa-external-link-alt"></i> Tramitar Pase</a>
+        </div>
+
+        <div class="tramite-card licencia-card card-span-1">
+            <h3><i class="fas fa-id-card"></i> Licencia de Conducir</h3>
+            <p>Información y requisitos para obtener o renovar tu licencia de conducir.</p>
+            <ul class="tramite-list">
+                <li><i class="fas fa-check-circle"></i> Agendar cita para examen.</li>
+                <li><i class="fas fa-check-circle"></i> Requisitos de identificación.</li>
+            </ul>
+            <a href="#" class="tramite-btn licencia-btn"><i class="fas fa-external-link-alt"></i> Ver Requisitos</a>
+        </div>
+        
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+             // Mueve la lógica del logout y la carga del dashboard aquí para evitar errores
+             const logoutButton = document.getElementById("logoutButton");
+             if (logoutButton) {
+                logoutButton.addEventListener('click', () => {
+                    sessionStorage.removeItem('loggedInUser'); // Limpia la sesión
+                    window.location.href = "index.html"; // Redirige al login
+                });
+            }
+            loadDashboard();
+            setupSidebar(); // Llama a la nueva función de configuración
+        });
+
+        // Configuración de la Sidebar
+        function setupSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const openBtn = document.getElementById('openSidebarBtn');
+            const closeBtn = document.getElementById('closeSidebarBtn');
+
+            if (openBtn) {
+                openBtn.addEventListener('click', () => {
+                    sidebar.classList.add('open');
+                    overlay.classList.add('visible');
+                });
+            }
+
+            const closeMenu = () => {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('visible');
+            }
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeMenu);
+            }
+            if (overlay) {
+                overlay.addEventListener('click', closeMenu);
+            }
+        }
+    </script>
+</body>
+</html>

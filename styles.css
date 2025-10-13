@@ -1,0 +1,750 @@
+/* Reset Básico y Variables */
+:root {
+    --color-white: #ffffff;
+    --color-pink: #f7a6b0; /* Color principal de fondo (Curva) */
+    --color-text-dark: #555555; /* Gris oscuro para títulos */
+    --color-text-label: #a3505c; /* Color de la etiqueta "Usuario", "Contraseña" */
+    --color-input-bg: rgba(255, 255, 255, 0.85); /* Fondo de input modal (semi-transparente) */
+    --color-input-curve-bg: #fdf2f3; /* Rosa muy pálido para los inputs del login */
+    --color-input-text-login: #6d6d6d; /* Color del texto dentro del input del login */
+    --color-button: #7ab89b; /* Color verde principal del botón */
+    --color-button-hover: #6a9b81;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+}
+
+/* ------------------------------------------------------------------ */
+/* ESTILOS DE LOGIN (index.html) */
+/* ------------------------------------------------------------------ */
+
+.main-container {
+    display: flex;
+    width: 90%;
+    max-width: 1300px;
+    height: 650px; 
+    background-color: var(--color-white);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 10px; 
+    overflow: hidden;
+}
+
+/* Panel Izquierdo */
+.left-panel {
+    flex: 1.5; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.left-panel h1 {
+    font-size: 3.5em; 
+    color: var(--color-text-dark);
+    font-weight: 800; 
+    letter-spacing: 3px;
+    padding-right: 5%; 
+}
+
+/* Panel Derecho y Curva de Diseño */
+.right-panel {
+    flex: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    z-index: 1; 
+    margin-left: -50px; 
+}
+
+.design-curve {
+    position: absolute;
+    top: -10%; 
+    right: -10%;
+    width: 150%; 
+    height: 120%; 
+    background-color: var(--color-pink); 
+    border-bottom-left-radius: 650px; 
+    transform: rotate(15deg) translateX(25%); 
+}
+
+/* Contenedor del Formulario */
+.login-form-wrapper {
+    position: relative;
+    z-index: 10;
+    width: 80%; 
+    padding: 30px;
+}
+
+/* Iconos de Cabecera (Para Registro y Updates) */
+.header-icons {
+    position: absolute;
+    top: -40px; 
+    right: -40px;
+    display: flex;
+    gap: 15px;
+    color: var(--color-white);
+    font-size: 1.6em;
+    pointer-events: auto;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.6em;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s;
+}
+
+.icon-button:hover {
+    color: #e0e0e0;
+}
+
+/* Formulario LOGIN */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px; 
+}
+
+/* Título "BIENVENIDO" */
+.form-title {
+    color: var(--color-white); 
+    font-size: 1.5em;
+    font-weight: 500;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+/* Campos de Input LOGIN */
+.input-field {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 5px; 
+}
+
+/* Label ("Usuario", "Contraseña") */
+.input-label {
+    position: absolute;
+    color: var(--color-text-label); 
+    font-size: 1em;
+    font-weight: bold;
+    top: -15px; 
+    left: 0;
+    z-index: 5;
+    background-color: transparent;
+}
+
+/* Input de texto/contraseña */
+.input-field input {
+    width: 100%;
+    padding: 15px 20px; 
+    border: none;
+    border-radius: 8px; 
+    background-color: var(--color-input-curve-bg); 
+    color: var(--color-input-text-login); 
+    font-size: 1.1em;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+}
+
+.input-field input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-button); 
+}
+
+/* Botón ENVIAR */
+.submit-button {
+    align-self: flex-end; 
+    padding: 12px 40px; 
+    border: none;
+    border-radius: 25px;
+    background-color: var(--color-button);
+    color: var(--color-white);
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin-top: 15px; 
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.submit-button:hover {
+    background-color: var(--color-button-hover);
+    transform: translateY(-2px); 
+}
+
+/* Mensaje de error (LOGIN) */
+.error-message {
+    display: none; 
+    color: #ff4d4d; 
+    font-size: 0.9em;
+    font-weight: bold;
+    margin-top: -10px; 
+    text-align: right;
+    width: 100%;
+}
+
+/* ------------------------------------------------------------------ */
+/* ESTILOS DE LOS MODALES (REGISTRO Y ACTUALIZACIONES) */
+/* ------------------------------------------------------------------ */
+
+/* Fondo oscurecido */
+.modal-overlay {
+    display: none; 
+    position: fixed;
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto; 
+    background-color: rgba(0, 0, 0, 0.6); 
+    backdrop-filter: blur(3px); 
+}
+
+/* Contenido del modal (Fondo Blanco) */
+.modal-content {
+    background-color: var(--color-white);
+    margin: 50px auto; 
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px; 
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-title {
+    color: var(--color-text-dark);
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* Botón de cerrar (X) */
+.close-button {
+    position: absolute; 
+    top: 15px;
+    right: 25px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: var(--color-pink);
+    text-decoration: none;
+}
+
+/* Estilos del Formulario REGISTRO (GRID) */
+.register-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr; 
+    gap: 15px;
+    padding-bottom: 50px; 
+}
+
+.input-field-modal {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-field-modal label {
+    font-size: 0.9em;
+    color: var(--color-text-dark);
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+/* Estilos para inputs y selectores del modal de registro */
+.input-field-modal input,
+.input-field-modal select {
+    width: 100%; 
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+    background-color: var(--color-input-bg);
+    color: var(--color-text-dark);
+    box-sizing: border-box; 
+}
+
+/* Los campos marcados como full-width deben ocupar 2 columnas */
+.register-form .full-width {
+    grid-column: span 2;
+}
+
+/* Botón REGISTRAR */
+.modal-submit-btn {
+    grid-column: span 2;
+    margin-top: 10px; 
+    justify-self: center; 
+    width: 90%; 
+    max-width: 300px;
+    padding: 15px 40px; 
+    font-size: 1.2em;
+    border-radius: 30px;
+}
+
+/* Mensaje de éxito del registro */
+.success-message {
+    grid-column: span 2;
+    color: #1abc9c; 
+    font-weight: bold;
+    text-align: center;
+    display: none;
+    margin-top: 10px;
+}
+
+/* ------------------------------------------------------------------ */
+/* ESTILOS DE MODAL DE VERIFICACIÓN */
+/* ------------------------------------------------------------------ */
+.verification-content {
+    text-align: center;
+    max-width: 400px;
+}
+
+.verification-content p {
+    color: #777;
+    margin-bottom: 20px;
+}
+
+.verification-input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.verification-input-group input {
+    text-align: center;
+    font-size: 1.5em;
+    letter-spacing: 5px;
+    width: 200px;
+    padding: 15px 10px;
+}
+
+.verification-input-group .error-message {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.resend-btn {
+    background: none;
+    border: none;
+    color: var(--color-pink);
+    text-decoration: underline;
+    cursor: pointer;
+    margin-top: 15px;
+    font-size: 0.9em;
+}
+
+.resend-btn:disabled {
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+
+/* ------------------------------------------------------------------ */
+/* ESTILOS PARA EL DASHBOARD (dashboard.html) */
+/* ------------------------------------------------------------------ */
+
+.dashboard-body {
+    background-color: #f0f4f7; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 0;
+}
+
+.dashboard-container {
+    width: 90%;
+    max-width: 1000px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px;
+    padding: 30px;
+    background-color: var(--color-white);
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    position: relative; 
+}
+
+/* La tarjeta de usuario ocupa todo el ancho */
+.card-span-4 {
+    grid-column: span 4;
+}
+
+/* Tarjeta de Información de Usuario */
+.user-info-card {
+    background-color: #f7f7f7;
+    padding: 25px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.user-greeting {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 15px;
+}
+
+.user-greeting i {
+    font-size: 2.8em;
+    color: var(--color-pink); 
+    margin-right: 15px;
+}
+
+.user-greeting h1 {
+    font-size: 2em;
+    color: var(--color-text-dark);
+    font-weight: 700;
+}
+
+.car-details-wrapper h3 {
+    color: var(--color-text-dark);
+    margin-bottom: 15px;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+.car-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 20px;
+}
+
+.car-details p {
+    font-size: 1em;
+    margin-bottom: 8px;
+    color: #444;
+}
+
+.car-details strong {
+    font-weight: 700;
+    color: #222;
+}
+
+/* Ilustración del carro */
+.car-illustration-container {
+    text-align: center;
+    padding-left: 20px;
+}
+
+.car-icon i {
+    font-size: 5em;
+}
+
+/* Tarjeta Hoy No Circula (Ocupa 2 columnas) */
+.hnc-card-large {
+    grid-column: span 2;
+    background-color: var(--color-white);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    border: 1px solid #eee;
+}
+
+.hnc-card-large h2 {
+    color: var(--color-pink);
+    font-size: 2.2em;
+    margin-bottom: 20px;
+    font-weight: 800;
+}
+
+.hnc-result {
+    padding: 30px 15px;
+    margin: 20px 0;
+    border-radius: 10px;
+    border: 3px dashed var(--color-pink); 
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1em;
+}
+
+.hnc-date, .hnc-placa-detail {
+    font-size: 1em;
+    color: #777;
+    margin-top: 10px;
+    font-weight: 500;
+}
+.hnc-date i, .hnc-placa-detail i {
+    color: var(--color-pink);
+    margin-right: 5px;
+}
+
+/* Estilos de Tarjetas de Trámites */
+.tramite-card {
+    grid-column: span 2; 
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.tramite-card h3 {
+    font-size: 1.4em;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+.tramite-card h3 i {
+    margin-right: 8px;
+}
+
+.tramite-card p {
+    font-size: 0.95em;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.tramite-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+.tramite-list li {
+    font-size: 0.9em;
+    color: #444;
+    line-height: 1.8;
+}
+.tramite-list i {
+    color: var(--color-button);
+    margin-right: 5px;
+}
+
+/* Estilos Específicos para Pase Turístico */
+.turistico-card {
+    background-color: #fce7f2; 
+    border: 1px solid #f7d3e2;
+}
+.turistico-card h3 {
+    color: #d13a69; 
+}
+
+/* Estilos Específicos para Licencia de Conducir */
+.licencia-card {
+    background-color: #e6f7ef; 
+    border: 1px solid #d5e9e0;
+}
+.licencia-card h3 {
+    color: #4a8678; 
+}
+
+/* Estilos de Botones de Trámites */
+.tramite-btn {
+    text-align: center;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 1em;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    margin-top: auto; 
+}
+
+.turistico-btn {
+    background-color: #d13a69;
+    color: var(--color-white);
+}
+.turistico-btn:hover {
+    background-color: #a32d52;
+}
+
+.licencia-btn {
+    background-color: #4a8678;
+    color: var(--color-white);
+}
+.licencia-btn:hover {
+    background-color: #3b6b5c;
+}
+
+/* ------------------------------------------------------------------ */
+/* ESTILOS PARA SIDEBAR */
+/* ------------------------------------------------------------------ */
+
+.menu-icon-btn {
+    position: absolute;
+    top: 30px; 
+    right: 30px;
+    background: none;
+    border: none;
+    color: var(--color-pink);
+    font-size: 2em;
+    cursor: pointer;
+    z-index: 50; 
+    transition: color 0.2s;
+}
+
+.menu-icon-btn:hover {
+    color: #c0392b; 
+}
+
+.sidebar {
+    height: 100%;
+    width: 320px; 
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    right: -320px; 
+    background-color: var(--color-white);
+    overflow-x: hidden;
+    transition: 0.3s;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar.open {
+    right: 0; 
+}
+
+.sidebar-overlay {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+    display: none;
+}
+
+.sidebar-overlay.visible {
+    display: block;
+}
+
+.close-sidebar-btn {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 36px;
+    background: none;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.close-sidebar-btn:hover {
+    color: var(--color-pink);
+}
+
+.sidebar-header {
+    text-align: center;
+    padding: 10px 0 20px 0;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 20px;
+}
+
+.sidebar-header i {
+    font-size: 3em;
+    color: var(--color-pink);
+    margin-bottom: 10px;
+}
+
+.sidebar-header h3 {
+    color: var(--color-text-dark);
+    font-size: 1.4em;
+    margin-bottom: 5px;
+}
+
+.sidebar-header .text-placa {
+    font-size: 0.9em;
+    color: #777;
+}
+
+.sidebar-section {
+    margin-bottom: 25px;
+    padding: 10px;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+}
+
+.sidebar-section h4 {
+    color: var(--color-text-label); 
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+.sidebar-section h4 i {
+    margin-right: 5px;
+    color: var(--color-button);
+}
+
+.user-detail-item {
+    font-size: 0.9em;
+    line-height: 1.8;
+    color: #555;
+}
+
+.user-detail-item strong {
+    display: inline-block;
+    width: 140px; 
+    font-weight: 600;
+    color: #333;
+}
+
+.sidebar-logout-btn {
+    margin-top: auto; 
+    width: 90%;
+    align-self: center;
+    padding: 12px;
+    font-size: 1em;
+    background-color: #c0392b; 
+}
+.sidebar-logout-btn:hover {
+    background-color: #a43023;
+}
+
+
+/* Media Query para pantallas grandes: ajusta el layout de la dashboard */
+@media (min-width: 1000px) {
+    .tramite-card {
+        grid-column: span 1; 
+    }
+}
