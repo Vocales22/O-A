@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Hoy No Circula</title>
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <div class="main-container">
+
+        <div class="left-panel">
+            <h1>HOY NO CIRCULA</h1>
+        </div>
+
+        <div class="right-panel">
+            <div class="design-curve"></div>
+            
+            <div class="login-form-wrapper">
+                
+                <div class="header-icons">
+                    <button id="openUpdatesModal" class="icon-button" title="Novedades"><i class="fas fa-bars"></i></button>
+                    <button id="openRegisterModal" class="icon-button" title="Registrarse"><i class="fas fa-user-plus"></i></button>
+                </div>
+
+                <form class="login-form" onsubmit="validarLogin(event)">
+                    <h2 class="form-title">BIENVENIDO</h2>
+                    
+                    <div class="input-field">
+                        <label for="usuario" class="input-label">Usuario</label>
+                        <input type="text" id="usuario" required>
+                    </div>
+                    
+                    <div class="input-field">
+                        <label for="contrasena" class="input-label">Contraseña</label>
+                        <input type="password" id="contrasena" required>
+                    </div>
+                    
+                    <p id="mensajeError" class="error-message"></p>
+
+                    <button type="submit" class="submit-button">ENVIAR</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="updatesModal" class="modal-overlay">
+        <div class="modal-content updates-content">
+            <span id="closeUpdatesModal" class="close-button">&times;</span>
+            <h2 class="modal-title">Novedades y Actualizaciones</h2>
+            <div class="updates-list">
+                <div class="update-item">
+                    <h4>Nueva Funcionalidad de Dashboard (v1.2)</h4>
+                    <ul>
+                        <li>Se implementó el Menú Lateral (Sidebar) para ver tu información personal completa.</li>
+                        <li>Ahora se muestran el Correo Electrónico y el Número de Celular registrados.</li>
+                        <li>¡El botón de Cerrar Sesión está en el nuevo menú!</li>
+                    </ul>
+                </div>
+                <div class="update-item">
+                    <h4>Registro con Verificación (v1.1)</h4>
+                    <ul>
+                        <li>Ahora el registro incluye la captura de Correo Electrónico y Número de Celular.</li>
+                        <li>Se agregó un paso de verificación simulada con código de 6 dígitos.</li>
+                    </ul>
+                </div>
+                <div class="update-item">
+                    <h4>Lanzamiento Inicial (v1.0)</h4>
+                    <ul>
+                        <li>Implementación de la lógica de Hoy No Circula por día de la semana.</li>
+                        <li>Diseño de login moderno con curva rosa.</li>
+                        <li>Funcionalidad de registro y login local.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="registerModal" class="modal-overlay">
+        <div class="modal-content">
+            <span id="closeRegisterModal" class="close-button">&times;</span>
+            <h2 class="modal-title">Registro de Nuevo Usuario</h2>
+            <form id="registerForm" class="register-form">
+                <div class="input-field-modal">
+                    <label for="reg_nombre">Nombre</label>
+                    <input type="text" id="reg_nombre" required>
+                </div>
+                <div class="input-field-modal">
+                    <label for="reg_apellido">Apellido</label>
+                    <input type="text" id="reg_apellido" required>
+                </div>
+                
+                <div class="input-field-modal">
+                    <label for="reg_placa">Num. de Placa</label>
+                    <input type="text" id="reg_placa" required>
+                </div>
+                <div class="input-field-modal">
+                    <label for="reg_marca">Marca del Carro</label>
+                    <select id="reg_marca" required>
+                        <option value="">Selecciona una marca</option>
+                    </select>
+                </div>
+                
+                <div class="input-field-modal">
+                    <label for="reg_modelo">Modelo del Carro</label>
+                    <select id="reg_modelo" disabled required>
+                        <option value="">Selecciona una marca primero</option>
+                    </select>
+                </div>
+                <div class="input-field-modal">
+                    <label for="reg_curp">CURP</label>
+                    <input type="text" id="reg_curp" required>
+                </div>
+
+                <div class="input-field-modal">
+                    <label for="reg_email">Correo Electrónico</label>
+                    <input type="email" id="reg_email" required>
+                </div>
+                <div class="input-field-modal">
+                    <label for="reg_celular">Num. de Celular</label>
+                    <input type="tel" id="reg_celular" required>
+                </div>
+
+                <div class="input-field-modal full-width">
+                    <label for="reg_usuario">Usuario (para Login)</label>
+                    <input type="text" id="reg_usuario" required>
+                </div>
+                <div class="input-field-modal full-width">
+                    <label for="reg_contrasena">Contraseña</label>
+                    <input type="password" id="reg_contrasena" required>
+                </div>
+
+                <p id="registroExito" class="success-message"></p>
+                <button type="submit" class="submit-button modal-submit-btn">REGISTRAR</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="verificationModal" class="modal-overlay">
+        <div class="modal-content verification-content">
+            <h2 class="modal-title">Verificación de Cuenta</h2>
+            <p>Hemos enviado un código de 6 dígitos a tu correo/celular. Por favor, ingrésalo para completar el registro.</p>
+            
+            <span id="displayCode" style="color: #c0392b; font-weight: bold; margin-bottom: 10px; display: block;"></span> 
+            
+            <div class="input-field-modal verification-input-group">
+                <label for="verificationCode">Código de Verificación</label>
+                <input type="number" id="verificationCode" maxlength="6" required>
+                <p id="verificationError" class="error-message"></p>
+            </div>
+            <button id="verifyButton" class="submit-button modal-submit-btn">VERIFICAR</button>
+            <button id="resendCodeButton" class="resend-btn">Reenviar Código</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 

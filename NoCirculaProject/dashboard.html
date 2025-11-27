@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Hoy No Circula</title>
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="dashboard-body">
+    
+    <div id="sidebar" class="sidebar">
+        <button class="close-sidebar-btn" id="closeSidebarBtn">&times;</button>
+        <div class="sidebar-header">
+            <i class="fas fa-user-circle"></i>
+            <h3 id="sidebarUserName">Usuario</h3>
+            <p id="sidebarUserPlaca" class="text-placa"></p>
+        </div>
+        
+        <div class="sidebar-section">
+            <h4><i class="fas fa-id-badge"></i> Mi Información Personal</h4>
+            <div class="user-detail-item">
+                <strong>Nombre Completo:</strong> <span id="sidebarFullName"></span>
+            </div>
+            <div class="user-detail-item">
+                <strong>CURP:</strong> <span id="sidebarCurp"></span>
+            </div>
+            <div class="user-detail-item">
+                <strong>Correo Electrónico:</strong> <span id="sidebarEmail">No registrado</span>
+            </div>
+            <div class="user-detail-item">
+                <strong>Celular:</strong> <span id="sidebarPhone">No registrado</span>
+            </div>
+        </div>
+        
+        <div class="sidebar-section">
+            <h4><i class="fas fa-car"></i> Datos del Vehículo</h4>
+            <div class="user-detail-item">
+                <strong>Marca:</strong> <span id="sidebarMarca"></span>
+            </div>
+            <div class="user-detail-item">
+                <strong>Modelo:</strong> <span id="sidebarModelo"></span>
+            </div>
+        </div>
+
+        <button id="logoutButton" class="submit-button sidebar-logout-btn">CERRAR SESIÓN</button>
+    </div>
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <div class="dashboard-container">
+        
+        <button id="openSidebarBtn" class="menu-icon-btn"><i class="fas fa-bars"></i></button>
+
+        <div class="user-info-card card-span-4">
+            <div class="user-greeting">
+                <i class="fas fa-user-circle"></i>
+                <h1 id="userGreeting">¡Bienvenido/a!</h1> 
+            </div>
+            
+            <div class="car-details-wrapper">
+                 <h3>Detalles de tu Vehículo</h3>
+                 <div class="car-details">
+                    <div>
+                        <p><strong>Marca:</strong> <span id="carMarca">Cargando...</span></p>
+                        <p><strong>Modelo:</strong> <span id="carModelo">Cargando...</span></p>
+                        <p><strong>Placa:</strong> <span id="userPlaca">Cargando...</span></p>
+                    </div>
+                    <div class="car-illustration-container">
+                        <span id="carIllustration" class="car-icon"><i class="fas fa-car"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hnc-card hnc-card-large card-span-2">
+            <h2>HOY NO CIRCULA</h2>
+            <div class="hnc-result">
+                <p id="hncVerdict">Verificando...</p>
+            </div>
+            <p class="hnc-date"><i class="fas fa-calendar-alt"></i> Fecha: <span id="currentDate"></span></p>
+            <p class="hnc-placa-detail"><i class="fas fa-barcode"></i> Placa: <span id="hncPlacaFinal"></span></p>
+        </div>
+
+        <div class="tramite-card turistico-card card-span-1">
+            <h3><i class="fas fa-plane-departure"></i> Pase Turístico</h3>
+            <p>Permite la exención temporal del programa Hoy No Circula para vehículos foráneos.</p>
+            <ul class="tramite-list">
+                <li><i class="fas fa-check-circle"></i> Válido por 7 o 14 días.</li>
+                <li><i class="fas fa-check-circle"></i> Requerido para autos extranjeros.</li>
+            </ul>
+            <a href="#" class="tramite-btn turistico-btn"><i class="fas fa-external-link-alt"></i> Tramitar Pase</a>
+        </div>
+
+        <div class="tramite-card licencia-card card-span-1">
+            <h3><i class="fas fa-id-card"></i> Licencia de Conducir</h3>
+            <p>Información y requisitos para obtener o renovar tu licencia de conducir.</p>
+            <ul class="tramite-list">
+                <li><i class="fas fa-check-circle"></i> Agendar cita para examen.</li>
+                <li><i class="fas fa-check-circle"></i> Requisitos de identificación.</li>
+            </ul>
+            <a href="#" class="tramite-btn licencia-btn"><i class="fas fa-external-link-alt"></i> Ver Requisitos</a>
+        </div>
+        
+    </div>
+
+    <div id="licenciaModal" class="modal-overlay">
+        <div class="modal-content">
+            <span id="closeLicenciaModal" class="close-button">&times;</span>
+            <h2 class="modal-title" style="border-bottom-color: #4a8678;">Renovación de Licencia</h2>
+            
+            <form id="formLicencia" class="register-form">
+                <div class="input-field-modal full-width">
+                    <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                        Este trámite es para la <strong>Licencia Tipo A</strong> (Vehículos particulares).
+                    </p>
+                </div>
+
+                <div class="input-field-modal">
+                    <label for="lic_rfc">RFC (Con Homoclave)</label>
+                    <input type="text" id="lic_rfc" placeholder="ABCD900101XYZ" maxlength="13" required style="text-transform: uppercase;">
+                </div>
+
+                <div class="input-field-modal">
+                    <label for="lic_vigencia">Vigencia Solicitada</label>
+                    <select id="lic_vigencia" required>
+                        <option value="3">3 Años</option>
+                        <option value="permanent">Permanente (Solo reposición)</option>
+                    </select>
+                </div>
+
+                <div class="input-field-modal">
+                    <label for="lic_sangre">Tipo de Sangre</label>
+                    <select id="lic_sangre" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="O+">O Positivo</option>
+                        <option value="O-">O Negativo</option>
+                        <option value="A+">A Positivo</option>
+                        <option value="A-">A Negativo</option>
+                        <option value="B+">B Positivo</option>
+                        <option value="B-">B Negativo</option>
+                        <option value="AB+">AB Positivo</option>
+                        <option value="AB-">AB Negativo</option>
+                    </select>
+                </div>
+
+                <div class="input-field-modal">
+                    <label for="lic_donador">¿Eres Donador de Órganos?</label>
+                    <select id="lic_donador" required>
+                        <option value="SI">Sí</option>
+                        <option value="NO">No</option>
+                    </select>
+                </div>
+
+                <div class="input-field-modal full-width">
+                    <label for="lic_linea">Línea de Captura (Pago de Derechos)</label>
+                    <input type="text" id="lic_linea" placeholder="Ingrese los 20 dígitos del pago" maxlength="20" required>
+                </div>
+
+                <button type="submit" class="submit-button modal-submit-btn" style="background-color: #4a8678;">SOLICITAR RENOVACIÓN</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="turisticoModal" class="modal-overlay">
+        <div class="modal-content">
+            <span id="closeTuristicoModal" class="close-button">&times;</span>
+            <h2 class="modal-title" style="border-bottom-color: #d13a69;">Pase Turístico CDMX</h2>
+            
+            <form id="formTuristico" class="register-form">
+                <div class="input-field-modal full-width">
+                    <div style="background-color: #fce7f2; padding: 10px; border-radius: 5px; font-size: 0.85em; color: #a32d52;">
+                        <i class="fas fa-info-circle"></i> <strong>Importante:</strong> Este pase solo es válido para vehículos con placas <strong>FORÁNEAS</strong> (fuera de la Megalópolis).
+                    </div>
+                </div>
+
+                <div class="input-field-modal full-width">
+                    <label for="tour_placa">Placa del Vehículo</label>
+                    <input type="text" id="tour_placa" readonly style="background-color: #eee; cursor: not-allowed;">
+                </div>
+
+                <div class="input-field-modal">
+                    <label for="tour_modelo">Año Modelo</label>
+                    <input type="number" id="tour_modelo" placeholder="Ej. 2018" min="2000" max="2025" required>
+                </div>
+
+                <div class="input-field-modal">
+                    <label for="tour_procedencia">Estado de Procedencia</label>
+                    <select id="tour_procedencia" required>
+                        <option value="">Selecciona...</option>
+                        <option value="Jalisco">Jalisco</option>
+                        <option value="Nuevo León">Nuevo León</option>
+                        <option value="Puebla">Puebla</option>
+                        <option value="Veracruz">Veracruz</option>
+                        <option value="Yucatán">Yucatán</option>
+                        <option value="Otro">Otro / Extranjero</option>
+                    </select>
+                </div>
+
+                <div class="input-field-modal full-width">
+                    <label>Duración del Pase:</label>
+                    <div style="display: flex; gap: 20px; margin-top: 5px;">
+                        <label style="display: flex; align-items: center; gap: 5px; font-weight: normal;">
+                            <input type="radio" name="duracion" value="7" checked> 7 Días
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 5px; font-weight: normal;">
+                            <input type="radio" name="duracion" value="14"> 14 Días
+                        </label>
+                    </div>
+                </div>
+
+                <div class="input-field-modal full-width">
+                    <label for="tour_fecha">Fecha de Inicio de Vigencia</label>
+                    <input type="date" id="tour_fecha" required>
+                </div>
+
+                <button type="submit" class="submit-button modal-submit-btn" style="background-color: #d13a69;">GENERAR PASE</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Script de inicialización rápida para sidebar (por si script.js tarda o falla en listeners)
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutButton = document.getElementById("logoutButton");
+            if (logoutButton) {
+                logoutButton.addEventListener('click', () => {
+                    sessionStorage.removeItem('loggedInUser'); 
+                    window.location.href = "index.html"; 
+                });
+            }
+            // loadDashboard se llama desde script.js
+        });
+    </script>
+</body>
+</html>
