@@ -1,0 +1,14 @@
+[
+    {
+        "usuario": "admin",
+        "contrasena": "admin123",
+        "nombre": "Administrador",
+        "apellido": "Flask",
+        "placa": "ABC-123",
+        "marca": "Ford",
+        "modelo": "Mustang",
+        "curp": "ADMIN123456",
+        "email": "admin@flask.com",
+        "celular": "5512345678"
+    }
+]
