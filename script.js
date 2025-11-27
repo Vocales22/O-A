@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const registerModal = document.getElementById("registerModal");
     const openRegisterBtn = document.getElementById("openRegisterModal");
-    const closeRegisterBtn = document.getElementById("closeRegisterModal");
+    const closeRegisterBtn = document.getElementById("closeRegisterBtn");
     const registerForm = document.getElementById("registerForm");
     const registroExito = document.getElementById("registroExito");
     
@@ -129,10 +129,20 @@ document.addEventListener('DOMContentLoaded', () => {
         registerForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
+            // Validación del límite de 6 caracteres (aunque el HTML ya lo hace, es buena práctica validarlo en JS)
+            const placaInput = document.getElementById('reg_placa').value;
+            if (placaInput.length > 6) {
+                registroExito.textContent = "❌ Error: La placa no debe exceder los 6 caracteres.";
+                registroExito.style.color = '#ff4d4d'; 
+                registroExito.style.display = 'block';
+                return;
+            }
+
+
             newUserData = { // Almacena datos temporalmente
                 nombre: document.getElementById('reg_nombre').value,
                 apellido: document.getElementById('reg_apellido').value,
-                placa: document.getElementById('reg_placa').value,
+                placa: placaInput, // Usamos la placa validada
                 marca: marcaSelect.value, 
                 modelo: modeloSelect.value, 
                 curp: document.getElementById('reg_curp').value,
@@ -331,28 +341,44 @@ function loadDashboard() {
     checkHoyNoCircula(userData.placa, today);
 }
 
+/**
+ * Verifica si la placa tiene restricción de circulación según el día de la semana.
+ * @param {string} placa - El número de placa del vehículo.
+ * @param {Date} date - La fecha actual para obtener el día de la semana.
+ */
 function checkHoyNoCircula(placa, date) {
-    const lastDigit = parseInt(placa.slice(-1));
-    const dayOfWeek = date.getDay(); 
+    // INICIO DE CORRECCIÓN: Lógica HNC
+    const lastChar = placa.slice(-1); // Obtener el último caracter (puede ser número o letra)
+    const lastDigit = parseInt(lastChar); // Intentar convertir a número. Si es letra, será NaN.
+    const dayOfWeek = date.getDay(); // 0 = Domingo, 1 = Lunes, ..., 6 = Sábado
     const hncVerdict = document.getElementById('hncVerdict');
 
     let noCirculan = [];
 
-    // Lunes = 1 (Dígitos 5, 6), Martes = 2 (7, 8), Miércoles = 3 (3, 4), Jueves = 4 (1, 2), Viernes = 5 (9, 0)
-    if (dayOfWeek === 1) { noCirculan = [5, 6]; } 
+    // REGLAS HNC: (El orden de los dígitos ha sido ajustado para que el 0 restrinja el Lunes)
+    // Lunes = 1: Restricción para dígitos 0 y 9
+    if (dayOfWeek === 1) { noCirculan = [0, 9]; } 
+    // Martes = 2: Restricción para dígitos 7 y 8
     else if (dayOfWeek === 2) { noCirculan = [7, 8]; } 
+    // Miércoles = 3: Restricción para dígitos 3 y 4 <-- ¡CORREGIDO!
     else if (dayOfWeek === 3) { noCirculan = [3, 4]; } 
-    else if (dayOfWeek === 4) { noCirculan = [1, 2]; } 
-    else if (dayOfWeek === 5) { noCirculan = [9, 0]; } 
-    // Sábado = 6, Domingo = 0. Se asume que estos días sí circulan para la mayoría, a menos que haya contingencia.
+    // Jueves = 4: Restricción para dígitos 5 y 6   <-- ¡CORREGIDO!
+    else if (dayOfWeek === 4) { noCirculan = [5, 6]; } 
+    // Viernes = 5: Restricción para dígitos 1 y 2
+    else if (dayOfWeek === 5) { noCirculan = [1, 2]; } 
+    // Sábado (6) y Domingo (0): noCirculan es [] (vacío)
 
-    if (noCirculan.includes(lastDigit) && dayOfWeek >= 1 && dayOfWeek <= 5) {
+    // Condición de NO CIRCULAR: Debe ser día hábil (1-5) Y el último carácter debe ser un dígito
+    // Y ese dígito debe estar en la lista de restricción para hoy.
+    if (dayOfWeek >= 1 && dayOfWeek <= 5 && !isNaN(lastDigit) && noCirculan.includes(lastDigit)) {
         hncVerdict.innerHTML = `<span style="color: #c0392b; font-weight: bold; font-size: 1.5em;">❌ ¡HOY NO CIRCULA!</span>`;
         hncVerdict.style.backgroundColor = '#f4c7c7';
     } else {
+        // Si no cumple las condiciones de NO CIRCULAR, entonces SÍ CIRCULA (incluye fines de semana).
         hncVerdict.innerHTML = `<span style="color: #27ae60; font-weight: bold; font-size: 1.5em;">✅ ¡HOY SÍ CIRCULA!</span>`;
         hncVerdict.style.backgroundColor = '#c7f4c7';
     }
+    // FIN DE CORRECCIÓN
 }
 
 // Lógica de sidebar y logout para dashboard.html
